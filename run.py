@@ -99,6 +99,11 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/feed',methods=['GET', 'POST'])
+def feedback():
+    return render_template('feedback.html')
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

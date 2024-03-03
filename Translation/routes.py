@@ -1,7 +1,6 @@
 from flask import Flask, redirect, render_template, request, url_for
-from Translation import db, UserMixin
 
-from Translation import app
+from Translation import UserMixin, app, db
 
 
 class User(db.Model, UserMixin):
@@ -32,3 +31,16 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     return render_template('signup.html')
+
+
+
+@app.route('/feed',methods=['GET', 'POST'])
+def feedback():
+    render_template('feedback.html')
+
+
+
+@app.route('/dash',methods=['GET', 'POST'])
+def dashboard():
+    render_template('dashboard.html')
+
