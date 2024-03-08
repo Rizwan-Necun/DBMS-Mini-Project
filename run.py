@@ -6,9 +6,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
+from google.cloud import translate_v2 as translate
+
+
+# def get_translation_client():
+#     return translate.Client()
+
+# def translate_text(text, target_language):
+#     client = get_translation_client()
+#     result = client.translate(text, target_language=target_language)
+#     translated_text = result['translatedText']
+#     return translated_text
+from translate import Translator
+from langdetect import detect
 
 # from Translation import db, UserMixin
-
 # from Translation import app
 
 app = Flask(__name__)
@@ -82,6 +94,16 @@ def logout():
     return redirect(url_for('index'))
 
 
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(username=form.username.data).first()
+#         if user:
+#             if Bcrypt.check_password_hash(user.password, form.password.data):
+#                 login_user(user)
+#                 return redirect(url_for('index'))
+#     return render_template('signin.html', form=form)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -90,7 +112,10 @@ def login():
         if user:
             if Bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('index'))
+                next_page = request.args.get('next')
+                if next_page and not next_page == url_for('login'):
+                    return redirect(next_page)
+                return redirect(url_for('translator'))
     return render_template('signin.html', form=form)
 
 
@@ -116,6 +141,18 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('signup.html', form=form)
+
+
+
+
+@app.route('/translator', methods=['GET', 'POST'])
+def translator():
+    if request.method == 'POST':
+        text_to_translate = request.form['text']
+        target_language = request.form['target_language']
+        translated_text = translate_text(text_to_translate, target_language)
+        return render_template('translator.html', translated_text=translated_text)
+    return render_template('translator.html')
 
 
 if __name__ == '__main__':

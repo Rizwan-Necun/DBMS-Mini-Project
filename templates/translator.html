@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h6>Welcome to translator page</h6>
+    <form method="POST">
+        <textarea name="text" rows="4" cols="50"></textarea><br>
+        Target Language:
+        <select name="target_language">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+        </select><br>
+        <input type="submit" value="Translate">
+    </form>
+    
+    {% if translated_text %}
+        <h3>Translated Text:</h3>
+        <p>{{ translated_text }}</p>
+    {% endif %}
+    
+</body>
+</html>
