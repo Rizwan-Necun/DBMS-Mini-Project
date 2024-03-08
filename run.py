@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for,jsonify
 from flask_bcrypt import Bcrypt
 from flask_login import (LoginManager, UserMixin, login_required, login_user,
                          logout_user)
@@ -6,7 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
-from google.cloud import translate_v2 as translate
+import os
+
+
 
 
 # def get_translation_client():
@@ -145,14 +147,78 @@ def register():
 
 
 
+from deep_translator import GoogleTranslator
+from gtts import gTTS
+def translate_text(text, target_language):
+    translated = GoogleTranslator(source='auto', target=target_language).translate(text)
+    return translated
+
+# @app.route('/translator', methods=['GET', 'POST'])
+# def translator():
+#     if request.method == 'POST':
+#         text_to_translate = request.form['text']
+#         target_language = request.form['target_language']
+#         translated_text = translate_text(text_to_translate, target_language)
+#         return render_template('translator.html', translated_text=translated_text)
+#     return render_template('translator.html')
+
+
+
+def translate_text(text, target_language):
+    translated = GoogleTranslator(source='auto', target=target_language).translate(text)
+    return translated
+
+def speak_text(text, lang='en'):
+    tts = gTTS(text=text, lang=lang, slow=False)
+    tts.save("translated_audio.mp3")
+    os.system("start translated_audio.mp3")  # For Windows
+
 @app.route('/translator', methods=['GET', 'POST'])
 def translator():
     if request.method == 'POST':
         text_to_translate = request.form['text']
         target_language = request.form['target_language']
         translated_text = translate_text(text_to_translate, target_language)
+        speak_text(translated_text, lang=target_language)  # Speak the translated text
         return render_template('translator.html', translated_text=translated_text)
     return render_template('translator.html')
+
+
+
+# def translate_text(text, target_language):
+#     translated = GoogleTranslator(source='auto', target=target_language).translate(text)
+#     return translated
+
+# def generate_audio(text, lang='en'):
+#     tts = gTTS(text=text, lang=lang, slow=False)
+#     audio_file = "translated_audio.mp3"
+#     tts.save(audio_file)
+#     return audio_file
+
+# @app.route('/translator', methods=['POST', 'GET'])
+# def translator():
+#     text_to_translate = request.form['text']
+#     target_language = request.form['target_language']
+#     translated_text = translate_text(text_to_translate, target_language)
+#     audio_file = generate_audio(translated_text, lang=target_language)
+#     audio_url = request.url_root + audio_file
+#     return jsonify({'translated_text': translated_text, 'audio_url': audio_url})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
