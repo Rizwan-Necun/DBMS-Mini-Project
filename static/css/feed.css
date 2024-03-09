@@ -1,113 +1,117 @@
 body {
+  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../img/hero-bg.jpg);
+  background-size: cover;
+  background-position: center;
+  align-items: center;
   
-    
-    background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../img/hero-bg.jpg);
-    
-            align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .feedback-column {
-    display: flex;
-    flex-direction: column;
-    padding:50px 40px;
-    margin: 10px 80px 15px 95px;
-    
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  margin: 40px auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  gap: 20px;
+  
+  
+}
+
+.feedback-column h1 {
+  text-align: center;
+  color: #333;
+}
+
+.feedback-column textarea {
+  width: 100%;
+  height: 150px; /* Increase height */
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.feedback-column button {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.feedback-column button:hover {
+  background-color: #007bff;
+  color: #fff;
 }
 
 .rating-column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  max-width: 600px;
+  padding: 10px;
+  margin: 50px auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-
-
 .rating-card {
-    width: 280px;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background: #0f0c29;
-    background: linear-gradient(to right bottom, #443e89, #0f0c29);
-    padding: 20px 20px;
-    border-radius: 10px;
-    gap: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.058);
-  }
-  .text-wrapper {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-  }
-  .text-primary1 {
-   
-    color: #cccccc;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .text-secondary {
-    color: #cccccc;
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
-  }
-  .rating-stars-container {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: center;
-  }
-  .star-label svg {
-    fill: rgb(210, 210, 210);
-    width: 20px;
-    height: auto;
-  }
-  .rating-stars-container input {
-    appearance: unset;
-  }
-  .rating-stars-container input:hover ~ .star-label svg {
-    fill: rgb(255, 204, 185);
-  }
-  .rating-stars-container input:checked ~ .star-label svg {
-    fill: rgb(255, 102, 47);
-    animation: slide-in-fwd-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-  @keyframes slide-in-fwd-center {
-    0% {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to right bottom, #443e89, #0f0c29);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.rating-card p {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.rating-stars-container {
+  display: flex;
+  justify-content: center;
+}
+
+.star-label {
+  margin: 0 5px;
+}
+
+.star-label svg {
+  fill: rgb(210, 210, 210);
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+}
+
+.star-label:hover svg {
+  fill: rgb(255, 204, 185);
+}
+
+.star-label input:checked ~ svg {
+  fill: rgb(255, 102, 47);
+  animation: slide-in-fwd-center 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-in-fwd-center {
+  0% {
       transform: scale(1.6);
-    }
-    100% {
+  }
+  100% {
       transform: scale(1);
-    }
   }
-  
-  .socials-container {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding-top: 20px;
-    border-top: 1px solid rgb(150, 150, 150);
-  }
-  .social-button {
-    text-decoration: none;
-  }
-  .social-button svg {
-    width: 15px;
-    fill: rgb(228, 228, 228);
-  }
-  .social-button:hover svg {
-    fill: rgb(255, 102, 47);
-  }
- 
+}

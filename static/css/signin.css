@@ -1,41 +1,62 @@
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-      font-size: 4.5rem;
-    }
-  }
- 
+body {
 
-  
-  .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .form-floating input {
-        height: 100px;
-        width: 300px; /* increase the height of input */
-    }
-    .form-floating:not(:last-child) {
-        margin-bottom: 0.7rem; /* add gap between email and password inputs */
-    }
-    .form-floating input:focus {
-        border-color: white !important; /* change the border color to white when focused */
-        box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.934) !important; /* add white shadow when focused */
-    }
-    body {
-        /*background: linear-gradient(to bottom right, #4a90e2, #1e5799);  */
-        
-        background: rgb(2,0,36);
-       background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 37%, rgba(0,212,255,1) 100%);
-    }
+  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../img/hero-bg.jpg);
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
+.container {
+  padding: 20px;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-    .register-link {
-        color: rgb(241, 203, 131); 
-        text-decoration: none; /* Remove default underline */
-      }
-      
-      .register-link:hover {
-        color: white; /* Change color on hover */
-      }
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #007bff;
+  margin-top: 15px;
+}

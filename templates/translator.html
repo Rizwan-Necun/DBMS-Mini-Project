@@ -4,8 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #212529;
+        margin: 0;
+        padding: 0;
+    }
+    .containerr {
+        margin: 50px auto;
+        padding: 20px;
+        max-width: 600px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h6 {
+        color: #495057;
+    }
+    form {
+        margin-top: 20px;
+    }
+    textarea, select {
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    h3 {
+        margin-top: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+</style>
 <body>
+    <nav style="background: linear-gradient(90deg, rgb(69, 68, 78) 0%, rgb(41, 41, 68) 37%, rgb(73, 93, 97) 100%); ">
+        <header class="p-3 mb-3 border-bottom" style="user-select: auto;" style="padding:10px;">
+            <div class="container" style="user-select: auto;">
+              <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" style="user-select: auto;">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none" style="user-select: auto;">
+                  <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap" style="user-select: auto;"><use xlink:href="#bootstrap" style="user-select: auto;"></use></svg>
+                </a>
+        
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0" style="user-select: auto;">
+                  <li style="user-select: auto;"><a href="{{url_for('index')}}" class="nav-link px-2" style="user-select: auto;color:beige;">Home</a></li>
+                  <li style="user-select: auto;"><a href="{{ url_for('logout') }}" class="nav-link px-2 link-body-emphasis" style="user-select: auto;color:beige;">Logout</a></li>
+                  <li style="user-select: auto;"><a href="#" class="nav-link px-2 link-body-emphasis" style="user-select: auto;color:beige;">Customers</a></li>
+                  <li style="user-select: auto;"><a href="{{url_for('feedback')}}" class="nav-link px-2 link-body-emphasis" style="user-select: auto;color:beige;">Feedback</a></li>
+                  
+        
+                </ul>
+        
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" style="user-select: auto;">
+                  <input type="search" class="form-control" placeholder="Search..." aria-label="Search" style="user-select: auto;" data-listener-added_f42f5b68="true">
+                </form>
+        
+                <div class="dropdown text-end" style="user-select: auto;">
+                  <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="user-select: auto;">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" style="user-select: auto;">
+                  </a>
+                  <ul class="dropdown-menu text-small" style="user-select: auto;">
+                    <li style="user-select: auto;"><a class="dropdown-item" href="#" style="user-select: auto;">New project...</a></li>
+                    <li style="user-select: auto;"><a class="dropdown-item" href="#" style="user-select: auto;">Settings</a></li>
+                    <li style="user-select: auto;"><a class="dropdown-item" href="#" style="user-select: auto;">Profile</a></li>
+                    <li style="user-select: auto;"><hr class="dropdown-divider" style="user-select: auto;"></li>
+                    <li style="user-select: auto;"><a class="dropdown-item" href="#" style="user-select: auto;">Sign out</a></li>
+                  </ul>
+                </div>
+    </nav>
+    <div class="containerr">
     <h6>Welcome to translator page</h6>
     <form method="POST">
         <textarea name="text" rows="4" cols="50"></textarea><br>
@@ -53,12 +137,13 @@
 <option value="fi">Finnish</option>
         </select><br>
         <input type="submit" value="Translate">
+        
     </form>
     
     {% if translated_text %}
         <h3>Translated Text:</h3>
         <p>{{ translated_text }}</p>
     {% endif %}
-    
+</div>
 </body>
 </html>

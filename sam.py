@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for,jsonify, session
+from flask import Flask, redirect, render_template, request, url_for,jsonify
 from flask_bcrypt import Bcrypt
 from flask_login import (LoginManager, UserMixin, login_required, login_user,
                          logout_user)
@@ -7,10 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
 import os
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import InputRequired, Length, ValidationError
-from flask_wtf import FlaskForm
-import bcrypt
+
 
 
 
@@ -52,23 +49,6 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    
-class TargetLanguage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    language = db.Column(db.String(50),nullable=False)
-
-    def __repr__(self):
-        return f'<TargetLanguage {self.language}>'
-    
-class Feedback(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    feedback = db.Column(db.Text)
-    rating = db.Column(db.Integer)
-
-    def __repr__(self):
-        return '<Feedback %r>' % self.id
-
 
 
 class RegisterForm(FlaskForm):
@@ -93,19 +73,6 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(
         min=8, max=20)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Login')
-    
-class TranslationHistory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    input_text = db.Column(db.Text, nullable=False)
-    output_text = db.Column(db.Text, nullable=False)
-    translated_language = db.Column(db.String(50), nullable=False)
-
-    def __repr__(self):
-        return f'<TranslationHistory {self.input_text} -> {self.translated_language}: {self.output_text}>'
-    
-from sqlalchemy.exc import IntegrityError
-
-
 
 
 with app.app_context():
@@ -159,22 +126,9 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/feed', methods=['GET', 'POST'])
+@app.route('/feed',methods=['GET', 'POST'])
 def feedback():
-    if request.method == 'POST':
-        username = request.form['username']
-        feedback_text = request.form['feedback']
-        rating = int(request.form['rating'])
-
-        feedback = Feedback(username=username, feedback=feedback_text, rating=rating)
-        db.session.add(feedback)
-        db.session.commit()
-
-        return redirect(url_for('translator'))  # Redirect to feedback page or any other page after submission
-
     return render_template('feedback.html')
-
-
 
 
 
@@ -219,15 +173,6 @@ def speak_text(text, lang='en'):
     tts.save("translated_audio.mp3")
     os.system("start translated_audio.mp3")  # For Windows
 
-# @app.route('/translator', methods=['GET', 'POST'])
-# def translator():
-#     if request.method == 'POST':
-#         text_to_translate = request.form['text']
-#         target_language = request.form['target_language']
-#         translated_text = translate_text(text_to_translate, target_language)
-#         speak_text(translated_text, lang=target_language)  # Speak the translated text
-#         return render_template('translator.html', translated_text=translated_text)
-#     return render_template('translator.html')
 @app.route('/translator', methods=['GET', 'POST'])
 def translator():
     if request.method == 'POST':
@@ -235,25 +180,29 @@ def translator():
         target_language = request.form['target_language']
         translated_text = translate_text(text_to_translate, target_language)
         speak_text(translated_text, lang=target_language)  # Speak the translated text
-
-        # Insert target_language into the database
-        target_language_entry = TargetLanguage(language=target_language)
-        db.session.add(target_language_entry)
-        db.session.commit()
-
-        # Insert translation history into the database
-        translation_history_entry = TranslationHistory(input_text=text_to_translate, 
-                                                       output_text=translated_text, 
-                                                       translated_language=target_language)
-        db.session.add(translation_history_entry)
-        db.session.commit()
-
         return render_template('translator.html', translated_text=translated_text)
-    
     return render_template('translator.html')
 
 
 
+# def translate_text(text, target_language):
+#     translated = GoogleTranslator(source='auto', target=target_language).translate(text)
+#     return translated
+
+# def generate_audio(text, lang='en'):
+#     tts = gTTS(text=text, lang=lang, slow=False)
+#     audio_file = "translated_audio.mp3"
+#     tts.save(audio_file)
+#     return audio_file
+
+# @app.route('/translator', methods=['POST', 'GET'])
+# def translator():
+#     text_to_translate = request.form['text']
+#     target_language = request.form['target_language']
+#     translated_text = translate_text(text_to_translate, target_language)
+#     audio_file = generate_audio(translated_text, lang=target_language)
+#     audio_url = request.url_root + audio_file
+#     return jsonify({'translated_text': translated_text, 'audio_url': audio_url})
 
 
 
