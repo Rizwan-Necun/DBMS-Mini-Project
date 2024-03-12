@@ -92,6 +92,12 @@
         <h3>Translated Text:</h3>
         <p>{{ translated_text }}</p>
     {% endif %}
+
+    {% if cost %}
+    <div>
+        <p>Translation cost: {{ cost }} INR</p>
+    </div>
+{% endif %}
 </div>
 </body>
 </html>

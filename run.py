@@ -14,14 +14,7 @@ import bcrypt
 
 
 
-# def get_translation_client():
-#     return translate.Client()
 
-# def translate_text(text, target_language):
-#     client = get_translation_client()
-#     result = client.translate(text, target_language=target_language)
-#     translated_text = result['translatedText']
-#     return translated_text
 from translate import Translator
 from langdetect import detect
 
@@ -78,6 +71,16 @@ class RegisterForm(FlaskForm):
         min=8, max=20)], render_kw={"placeholder": "Password"})
 
     submit = SubmitField('Register')
+    
+class TranslationCost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    input_text = db.Column(db.Text, nullable=False)
+    translated_language = db.Column(db.String(50), nullable=False)
+    cost_in_rupees = db.Column(db.Float, nullable=False)
+
+    def __repr__(self):
+        return f'<TranslationCost {self.input_text} -> {self.translated_language}: {self.cost_in_rupees} INR>'
+
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(
@@ -129,16 +132,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(username=form.username.data).first()
-#         if user:
-#             if Bcrypt.check_password_hash(user.password, form.password.data):
-#                 login_user(user)
-#                 return redirect(url_for('index'))
-#     return render_template('signin.html', form=form)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -199,14 +193,7 @@ def translate_text(text, target_language):
     translated = GoogleTranslator(source='auto', target=target_language).translate(text)
     return translated
 
-# @app.route('/translator', methods=['GET', 'POST'])
-# def translator():
-#     if request.method == 'POST':
-#         text_to_translate = request.form['text']
-#         target_language = request.form['target_language']
-#         translated_text = translate_text(text_to_translate, target_language)
-#         return render_template('translator.html', translated_text=translated_text)
-#     return render_template('translator.html')
+
 
 
 
@@ -219,6 +206,7 @@ def speak_text(text, lang='en'):
     tts.save("translated_audio.mp3")
     os.system("start translated_audio.mp3")  # For Windows
 
+
 # @app.route('/translator', methods=['GET', 'POST'])
 # def translator():
 #     if request.method == 'POST':
@@ -226,8 +214,24 @@ def speak_text(text, lang='en'):
 #         target_language = request.form['target_language']
 #         translated_text = translate_text(text_to_translate, target_language)
 #         speak_text(translated_text, lang=target_language)  # Speak the translated text
+
+#         # Insert target_language into the database
+#         target_language_entry = TargetLanguage(language=target_language)
+#         db.session.add(target_language_entry)
+#         db.session.commit()
+
+#         # Insert translation history into the database
+#         translation_history_entry = TranslationHistory(input_text=text_to_translate, 
+#                                                        output_text=translated_text, 
+#                                                        translated_language=target_language)
+#         db.session.add(translation_history_entry)
+#         db.session.commit()
+
 #         return render_template('translator.html', translated_text=translated_text)
+    
 #     return render_template('translator.html')
+
+#################################################################################
 @app.route('/translator', methods=['GET', 'POST'])
 def translator():
     if request.method == 'POST':
@@ -239,16 +243,27 @@ def translator():
         # Insert target_language into the database
         target_language_entry = TargetLanguage(language=target_language)
         db.session.add(target_language_entry)
-        db.session.commit()
-
+        
         # Insert translation history into the database
         translation_history_entry = TranslationHistory(input_text=text_to_translate, 
                                                        output_text=translated_text, 
                                                        translated_language=target_language)
         db.session.add(translation_history_entry)
+        
+        # Calculate cost - Example: 2 INR per word
+        cost_per_word = 2
+        number_of_words = len(text_to_translate.split())
+        total_cost = cost_per_word * number_of_words
+
+        # Insert translation cost into the database
+        translation_cost_entry = TranslationCost(input_text=text_to_translate, 
+                                                 translated_language=target_language, 
+                                                 cost_in_rupees=total_cost)
+        db.session.add(translation_cost_entry)
+        
         db.session.commit()
 
-        return render_template('translator.html', translated_text=translated_text)
+        return render_template('translator.html', translated_text=translated_text, cost=total_cost)
     
     return render_template('translator.html')
 
